@@ -1,0 +1,122 @@
+<section class="add-book">
+  <section ng-if="!addedBook">
+    <h1 class="title">Add Book</h1>
+    <wizard on-finish="finishedWizard()" on-cancel="cancelledWizard()">
+      <wz-step wz-title="Genre">
+        <h2 class="header">Please select Genre</h2>
+        <ul class="clean-list btn-list">
+          <li ng-repeat="genre in genres">
+            <button ng-click="selectGenre(genre)">{{genre.name}}</button>
+          </li>
+        </ul>
+        <div class="bottom-btn">
+          <input type="submit" wz-next value="Next" ng-disabled="!book.genreId" />
+        </div>
+      </wz-step>
+      <wz-step wz-title="Subgenre">
+        <h2 class="header">Select Sub Genre for {{book.genre.name}}</h2>
+        <ul class="clean-list btn-list">
+          <li ng-repeat="subGenre in selectedGenre.subGenres">
+            <button ng-click="selectSubGenre(subGenre)">{{subGenre.name}}</button>
+          </li>
+          <li>
+            <button ng-click="showAddSubGenre()">Add New</button>
+          </li>
+        </ul>
+        <div class="bottom-btn">
+          <input type="submit" wz-previous value="Back" />
+          <input type="submit" wz-next value="Next" ng-disabled="!book.subGenreId" />
+        </div>
+      </wz-step>
+
+      <wz-step wz-title="Add new subgenre" wz-disabled="{{hideAddNewSubgenre}}">
+        <h2 class="header">Add New Subgenre</h2>
+        <form ng-submit="addSubgenre()">
+          <input class="newSubGenre" type="text" ng-model="newSubGenre.name" placeholder="Sub Genre name" />
+          <div class="desc-required">
+            <input type="checkbox" ng-model="newSubGenre.isDescriptionRequired">
+            <label>Is description required for this subgenre?</label>
+          </div>
+          <div class="bottom-btn">
+            <input type="submit" value="Next" />
+          </div>
+        </form>
+
+      </wz-step>
+
+      <wz-step wz-title="Information">
+        <form ng-submit="addBook($event)">
+          <label for="title">Book title</label>
+          <input class="book-info" type="text" name="title" placeholder="Book title" ng-model="book.title">
+          <label for="author">Author</label>
+          <select class="book-info" type="text" name="author" ng-model="book.author">
+            <option selected value="" disabled hidden>Author</option>
+            <option value="author-1">author-1</option>
+            <option value="author-2">author-2</option>
+          </select>
+          <label for="isbn">ISBN</label>
+          <input class="book-info" type="text" name="isbn" placeholder="ISBN" ng-model="book.isbn">
+          <label for="publisher">Publisher</label>
+          <select class="book-info" type="text" name="publisher" ng-model="book.publisher">
+            <option selected value="" disabled hidden>Publisher</option>
+            <option value="publisher-1">publisher-1</option>
+            <option value="publisher-2">publisher-2</option>
+          </select>
+          <label for="datePublished">Date Published</label>
+          <input class="book-info small-field" type="date" name="datePublished" placeholder="Date Published" ng-model="book.datePublished">
+          <label for="numOfPages">Number of pages</label>
+          <input class="book-info num-of-pages" type="text" name="numOfPages" placeholder="Number of pages" ng-model="book.numOfPages">
+          <label for="format">Format</label>
+          <select class="book-info small-field" type="text" name="format" ng-model="book.format">
+            <option selected value="" disabled hidden>Format</option>
+            <option value="format-1">format-1</option>
+            <option value="format-2">format-2</option>
+          </select>
+          <div class="edition-row">
+            <div class="edition-fields">
+              <label for="edition">Edition</label>
+              <input class="book-info small-field" type="text" name="edition" placeholder="Edition" ng-model="book.edition">
+            </div>
+            <div class="edition-fields">
+              <label for="editionLang">Edition language</label>
+              <select class="book-info small-field" type="text" name="editionLang" ng-model="book.editionLang">
+                <option selected value="" disabled hidden>Edition language</option>
+                <option value="format-1">editionLang-1</option>
+                <option value="format-2">editionLang-2</option>
+              </select>
+            </div>
+          </div>
+          <label for="description">Description</label>
+          <input class="book-info description" type="text" name="description" placeholder="Type the description" ng-model="book.description">
+          <div class="bottom-btn">
+            <input type="submit" wz-previous value="Back" />
+            <input type="submit" value="Add" />
+          </div>
+        </form>
+      </wz-step>
+
+      <wz-step wz-title="Book added" wz-disabled="{{hideAddNewSubgenre}}">
+        <h2 class="header">Book added successfully</h2>
+        <button>Add another book</button>
+      </wz-step>
+    </wizard>
+    debug:
+    <pre>{{book | json}}</pre>
+    <!-- <pre>{{genres | json}}</pre> -->
+  </section>
+
+  <section class="last-section" ng-if="addedBook">
+    <h2 class="added-success">Book Added successfully</h2>
+    <pre>{{addedBook | json}}</pre>
+    <button class="btn-added" ng-click="resetWizard()">Add another book</button>
+    <h3>Added Book List</h3>
+    <ul>
+      <li ng-repeat="book in books">
+        <pre>{{book | json}}</pre>
+      </li>
+    </ul>
+
+  </section>
+
+
+</section>
